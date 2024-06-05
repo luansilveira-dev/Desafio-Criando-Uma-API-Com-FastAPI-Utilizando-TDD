@@ -9,11 +9,11 @@ readme = "README.md"
 python = "^3.12"
 fastapi = "^0.111.0"
 uvicorn = "^0.30.0"
-pydantic = "^2.7.2"
 pydantic-settings = "^2.2.1"
 motor = "^3.4.0"
 pytest = "^8.2.1"
 pytest-asyncio = "^0.23.7"
+pydantic = "^2.7.3"
 
 
 [build-system]
