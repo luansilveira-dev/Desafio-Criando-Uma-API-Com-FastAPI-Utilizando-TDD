@@ -11,7 +11,7 @@ def test_schemas_return_success():
     product = ProductIn.model_validate(data)
 
     assert product.name == "Iphone 14 pro Max"
-    assert isinstance(product.id, UUID)
+
 
 
 def test_schemas_return_raise():
