@@ -2,6 +2,7 @@ import asyncio
 from uuid import UUID
 import pytest
 import pytest_asyncio
+from httpx import AsyncClient
 from store.db.mongo import db_client
 from store.schemas.product import ProductIn, ProductUpdate
 from store.usecases.product import product_usecase
@@ -29,17 +30,31 @@ async def clear_collections(mongo_client):
         if collection_name.startswith("system"):
             continue
 
-        await mongo_client.get_database()[collection_name].delete_many({})    
+        #await mongo_client.get_database()[collection_name].delete_many({})
+
+
+@pytest_asyncio.fixture
+async def client() -> AsyncClient:  # type: ignore
+    from store.main import app
+
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
+
+@pytest.fixture
+def product_url() -> str:
+    return "/products"
 
 
 @pytest.fixture
 def product_id() -> UUID:
-    return UUID("fce6cc37-10b9-4a8e-a8b2-977df327001a")
+    return UUID("da7d7032-8637-4441-90fb-2117a1daf215")
+    # "fce6cc37-10b9-4a8e-a8b2-977df327001a"
 
 
 @pytest.fixture
 def product_in(product_id):
     return ProductIn(**product_data(), id=product_id)
+
 
 @pytest.fixture
 def product_up(product_id):

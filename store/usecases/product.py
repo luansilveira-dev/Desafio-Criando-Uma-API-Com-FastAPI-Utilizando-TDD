@@ -24,6 +24,7 @@ class ProductUsecase:
 
     async def get(self, id: UUID) -> ProductOut:
         _id = Binary(id.bytes, UuidRepresentation.STANDARD)
+        
         result = await self.collection.find_one({"id": _id})
 
         if not result:
@@ -36,13 +37,13 @@ class ProductUsecase:
 
     async def update(self, id: UUID, body: ProductUpdate) -> ProductUpdateOut:
         _id = Binary(id.bytes, UuidRepresentation.STANDARD)
+        product = ProductUpdate(**body.model_dump(exclude_none=True))
 
         result = await self.collection.find_one_and_update(
             filter={"id": _id},
-            update={"$set": body.model_dump(exclude_none=True)},
+            update={"$set": product.model_dump()},
             return_document=pymongo.ReturnDocument.AFTER,
         )
-
         return ProductUpdateOut(**result)
 
     async def delete(self, id: UUID) -> bool:
