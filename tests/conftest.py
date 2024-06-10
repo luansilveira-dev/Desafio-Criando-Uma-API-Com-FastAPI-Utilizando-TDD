@@ -42,7 +42,7 @@ async def client() -> AsyncClient:  # type: ignore
 
 @pytest.fixture
 def product_url() -> str:
-    return "/products"
+    return "/products/"
 
 
 @pytest.fixture
